@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Triage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(to bottom, #001133 0%, #001a44 100%);
+      color: #ffffff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    canvas#starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      display: block;
+    }
+
+    header {
+      padding: 100px 30px 10px;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 64px;
+      margin: 0;
+      color: #00c3ff;
+      letter-spacing: 4px;
+    }
+
+    p.tagline {
+      font-size: 22px;
+      color: #ccc;
+      margin-top: 10px;
+    }
+
+    .description {
+      text-align: center;
+      max-width: 700px;
+      margin: 20px auto 40px;
+      color: #bbb;
+      font-size: 18px;
+    }
+
+    .get-started {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .get-started .button {
+      font-size: 22px;
+      padding: 18px 36px;
+      background: #00c3ff;
+      color: #000;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+
+    .get-started .button:hover {
+      background: #00a8d9;
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      font-size: 14px;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+  <header>
+    <h1>Space Triage</h1>
+    <p class="tagline">AI-Powered Medical Insight for Astronauts in Deep Space 🚀</p>
+  </header>
+
+  <p class="description">
+    Space Triage is a cutting-edge diagnostic assistant designed for space missions, helping astronauts triage and interpret medical scans autonomously using AI. Powered by multimodal large language models, it assists in identifying anatomical features, detecting anomalies, and providing navigational guidance — even in the most distant corners of the cosmos.
+  </p>
+
+  <div class="get-started">
+    <a class="button" href="https://huggingface.co/spaces/keivalya/space-triage" target="_blank">🚀 Get Started</a>
+  </div>
+
+  <footer>
+    Built with 💖 at Sundai Club
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    let w, h;
+
+    function initStars(count) {
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.05,
+          vy: (Math.random() - 0.5) * 0.05,
+          radius: Math.random() * 1.2 + 0.3
+        });
+      }
+    }
+
+    function resizeCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      initStars(400);
+    }
+
+    function drawStars(mouseX = 0) {
+      ctx.fillStyle = 'rgba(0, 10, 30, 1)';
+      ctx.fillRect(0, 0, w, h);
+
+      for (let star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = '#fff';
+        ctx.fill();
+
+        star.x += star.vx;
+        star.y += star.vy;
+
+        if (star.x < 0 || star.x > w) star.vx *= -1;
+        if (star.y < 0 || star.y > h) star.vy *= -1;
+      }
+    }
+
+    function animate() {
+      drawStars();
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    animate();
+  </script>
+</body>
+</html>
